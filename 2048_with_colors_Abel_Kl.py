@@ -14,22 +14,22 @@ def can_move():
     # if dir == "UP","DOWN":
     for y in range(4):
         for x in range(3):
-            if tiles[x+1][y] != 0 and tiles[x][y] == 0:
+            if tiles[x + 1][y] != 0 and tiles[x][y] == 0:
                 can_move[0] = True
-            if tiles[x][y] != 0 and tiles[x+1][y] == 0:
+            if tiles[x][y] != 0 and tiles[x + 1][y] == 0:
                 can_move[1] = True
-            if tiles[x][y] == tiles[x+1][y] and tiles[x][y] != 0:
+            if tiles[x][y] == tiles[x + 1][y] and tiles[x][y] != 0:
                 can_move[0] = True
                 can_move[1] = True
 
     # if dir == "LEFT","RIGHT":
     for x in range(4):
         for y in range(3):
-            if tiles[x][y+1] != 0 and tiles[x][y] == 0:
+            if tiles[x][y + 1] != 0 and tiles[x][y] == 0:
                 can_move[2] = True
-            if tiles[x][y] != 0 and tiles[x][y+1] == 0:
+            if tiles[x][y] != 0 and tiles[x][y + 1] == 0:
                 can_move[3] = True
-            if tiles[x][y] == tiles[x][y+1] and tiles[x][y] != 0:
+            if tiles[x][y] == tiles[x][y + 1] and tiles[x][y] != 0:
                 can_move[2] = True
                 can_move[3] = True
 
@@ -54,24 +54,24 @@ def add(direction):
     if direction == "RIGHT":
         for i in range(4):
             if tiles[i][3] == tiles[i][2] == tiles[i][1] == tiles[i][0]:
-                tiles[i][3] = tiles[i][3]*2
+                tiles[i][3] = tiles[i][3] * 2
                 tiles[i][2] = 0
-                tiles[i][1] = tiles[i][1]*2
+                tiles[i][1] = tiles[i][1] * 2
                 tiles[i][0] = 0
                 score += tiles[i][1] + tiles[i][3]
 
             if tiles[i][3] == tiles[i][2]:
-                tiles[i][3] = tiles[i][2]*2
+                tiles[i][3] = tiles[i][2] * 2
                 tiles[i][2] = 0
                 score += tiles[i][3]
 
             if tiles[i][2] == tiles[i][1]:
-                tiles[i][2] = tiles[i][2]*2
+                tiles[i][2] = tiles[i][2] * 2
                 tiles[i][1] = 0
                 score += tiles[i][2]
 
             if tiles[i][1] == tiles[i][0]:
-                tiles[i][1] = tiles[i][1]*2
+                tiles[i][1] = tiles[i][1] * 2
                 tiles[i][0] = 0
                 score += tiles[i][1]
 
@@ -79,23 +79,23 @@ def add(direction):
         for i in range(4):
             if tiles[i][3] == tiles[i][2] == tiles[i][1] == tiles[i][0]:
                 tiles[i][3] = 0
-                tiles[i][2] = tiles[i][1]*2
+                tiles[i][2] = tiles[i][1] * 2
                 tiles[i][1] = 0
-                tiles[i][0] = tiles[i][1]*2
+                tiles[i][0] = tiles[i][1] * 2
                 score += tiles[i][2] + tiles[i][0]
 
             if tiles[i][0] == tiles[i][1]:
-                tiles[i][0] = tiles[i][0]*2
+                tiles[i][0] = tiles[i][0] * 2
                 tiles[i][1] = 0
                 score += tiles[i][0]
 
             if tiles[i][1] == tiles[i][2]:
-                tiles[i][1] = tiles[i][1]*2
+                tiles[i][1] = tiles[i][1] * 2
                 tiles[i][2] = 0
                 score += tiles[i][1]
 
             if tiles[i][2] == tiles[i][3]:
-                tiles[i][2] = tiles[i][2]*2
+                tiles[i][2] = tiles[i][2] * 2
                 tiles[i][3] = 0
                 score += tiles[i][2]
 
@@ -103,24 +103,24 @@ def add(direction):
 
         for i in range(4):
             if tiles[0][i] == tiles[1][i] == tiles[2][i] == tiles[3][i]:
-                tiles[0][i] = tiles[0][i]*2
+                tiles[0][i] = tiles[0][i] * 2
                 tiles[1][i] = 0
-                tiles[2][i] = tiles[2][i]*2
+                tiles[2][i] = tiles[2][i] * 2
                 tiles[3][i] = 0
                 score += tiles[0][i] + tiles[2][i]
 
             if tiles[0][i] == tiles[1][i]:
-                tiles[0][i] = tiles[0][i]*2
+                tiles[0][i] = tiles[0][i] * 2
                 tiles[1][i] = 0
                 score += tiles[0][i]
 
             if tiles[1][i] == tiles[2][i]:
-                tiles[1][i] = tiles[1][i]*2
+                tiles[1][i] = tiles[1][i] * 2
                 tiles[2][i] = 0
                 score += tiles[1][i]
 
             if tiles[2][i] == tiles[3][i]:
-                tiles[2][i] = tiles[2][i]*2
+                tiles[2][i] = tiles[2][i] * 2
                 tiles[3][i] = 0
                 score += tiles[2][i]
 
@@ -129,23 +129,23 @@ def add(direction):
         for i in range(4):
             if tiles[0][i] == tiles[1][i] == tiles[2][i] == tiles[3][i]:
                 tiles[0][i] = 0
-                tiles[1][i] = tiles[1][i]*2
+                tiles[1][i] = tiles[1][i] * 2
                 tiles[2][i] = 0
-                tiles[3][i] = tiles[3][i]*2
+                tiles[3][i] = tiles[3][i] * 2
                 score += tiles[1][i] + tiles[3][i]
 
             if tiles[3][i] == tiles[2][i]:
-                tiles[3][i] = tiles[3][i]*2
+                tiles[3][i] = tiles[3][i] * 2
                 tiles[2][i] = 0
                 score += tiles[3][i]
 
             if tiles[2][i] == tiles[1][i]:
-                tiles[2][i] = tiles[1][i]*2
+                tiles[2][i] = tiles[1][i] * 2
                 tiles[1][i] = 0
                 score += tiles[2][i]
 
             if tiles[1][i] == tiles[0][i]:
-                tiles[1][i] = tiles[0][i]*2
+                tiles[1][i] = tiles[0][i] * 2
                 tiles[0][i] = 0
                 score += tiles[1][i]
     slide(direction)
@@ -155,8 +155,8 @@ def add(direction):
         for y in range(4):
             for x in range(3):
                 if step_over == False:
-                    if tiles[x][y] == tiles[x+1][y]:
-                        tiles[x+1][y] *= 2
+                    if tiles[x][y] == tiles[x + 1][y]:
+                        tiles[x + 1][y] *= 2
                         tiles[x][y] = 0
                         step_over = True
                 else:
@@ -165,8 +165,8 @@ def add(direction):
         for y in range(4):
             for x in range(3, 1, -1):
                 if step_over == False:
-                    if tiles[x][y] == tiles[x-1][y]:
-                        tiles[x-1][y] *= 2
+                    if tiles[x][y] == tiles[x - 1][y]:
+                        tiles[x - 1][y] *= 2
                         tiles[x][y] = 0
                         step_over = True
                 else:
@@ -252,34 +252,34 @@ def slide(dir):
         if dir == "UP":
             for y in range(4):
                 for x in range(3, 0, -1):
-                    if not(tiles[x][y] == 0) and tiles[x-1][y] == 0:
+                    if not(tiles[x][y] == 0) and tiles[x - 1][y] == 0:
                         moved = True
                         moved_return = True
-                        tiles[x-1][y] = tiles[x][y]
+                        tiles[x - 1][y] = tiles[x][y]
                         tiles[x][y] = 0
         if dir == "DOWN":
             for y in range(4):
                 for x in range(3):
-                    if not(tiles[x][y] == 0) and tiles[x+1][y] == 0:
+                    if not(tiles[x][y] == 0) and tiles[x + 1][y] == 0:
                         moved = True
                         moved_return = True
-                        tiles[x+1][y] = tiles[x][y]
+                        tiles[x + 1][y] = tiles[x][y]
                         tiles[x][y] = 0
         if dir == "LEFT":
             for x in range(4):
                 for y in range(3, 0, -1):
-                    if not(tiles[x][y] == 0) and tiles[x][y-1] == 0:
+                    if not(tiles[x][y] == 0) and tiles[x][y - 1] == 0:
                         moved = True
                         moved_return = True
-                        tiles[x][y-1] = tiles[x][y]
+                        tiles[x][y - 1] = tiles[x][y]
                         tiles[x][y] = 0
         if dir == "RIGHT":
             for x in range(4):
                 for y in range(3):
-                    if not(tiles[x][y] == 0) and tiles[x][y+1] == 0:
+                    if not(tiles[x][y] == 0) and tiles[x][y + 1] == 0:
                         moved = True
                         moved_return = True
-                        tiles[x][y+1] = tiles[x][y]
+                        tiles[x][y + 1] = tiles[x][y]
                         tiles[x][y] = 0
 
 
@@ -334,9 +334,9 @@ def main(stdscr):
     while True:
         stdscr.clear()
         stdscr.addstr("Game over")
-        stdscr.refresh        
+        stdscr.refresh
         if stdscr.getch() == ord('q'):
-                break
+            break
 
 
 # wrap it so it doesn't mess with terminal settings while debugging
