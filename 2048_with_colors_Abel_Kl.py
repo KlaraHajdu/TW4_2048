@@ -47,102 +47,56 @@ def add(direction, tiles):
     slide(direction, tiles)
 
     if direction == "RIGHT":
-        for i in range(4):
-            if tiles[i][3] == tiles[i][2] == tiles[i][1] == tiles[i][0]:
-                tiles[i][3] = tiles[i][3] * 2
-                tiles[i][2] = 0
-                tiles[i][1] = tiles[i][1] * 2
-                tiles[i][0] = 0
-                score += tiles[i][1] + tiles[i][3]
-
-            if tiles[i][3] == tiles[i][2]:
-                tiles[i][3] = tiles[i][2] * 2
-                tiles[i][2] = 0
-                score += tiles[i][3]
-
-            if tiles[i][2] == tiles[i][1]:
-                tiles[i][2] = tiles[i][2] * 2
-                tiles[i][1] = 0
-                score += tiles[i][2]
-
-            if tiles[i][1] == tiles[i][0]:
-                tiles[i][1] = tiles[i][1] * 2
-                tiles[i][0] = 0
-                score += tiles[i][1]
+        for x in range(4):
+            if tiles[x][3] == tiles[x][2] == tiles[x][1] == tiles[x][0]:
+                tiles[x][0], tiles[x][2] = 0, 0
+                tiles[x][1], tiles[x][3] = tiles[x][1] * 2,  tiles[x][3] * 2
+                score += tiles[x][1] + tiles[x][3]
+            for y in range(3, 0, -1):
+                if tiles[x][y] == tiles[x][y-1]:
+                    tiles[x][y] *= 2
+                    tiles[x][y-1] = 0
+                    score += tiles[x][y]
 
     elif direction == "LEFT":
-        for i in range(4):
-            if tiles[i][3] == tiles[i][2] == tiles[i][1] == tiles[i][0]:
-                tiles[i][3] = 0
-                tiles[i][2] = tiles[i][1] * 2
-                tiles[i][1] = 0
-                tiles[i][0] = tiles[i][1] * 2
-                score += tiles[i][2] + tiles[i][0]
-
-            if tiles[i][0] == tiles[i][1]:
-                tiles[i][0] = tiles[i][0] * 2
-                tiles[i][1] = 0
-                score += tiles[i][0]
-
-            if tiles[i][1] == tiles[i][2]:
-                tiles[i][1] = tiles[i][1] * 2
-                tiles[i][2] = 0
-                score += tiles[i][1]
-
-            if tiles[i][2] == tiles[i][3]:
-                tiles[i][2] = tiles[i][2] * 2
-                tiles[i][3] = 0
-                score += tiles[i][2]
+        for x in range(4):
+            if tiles[x][3] == tiles[x][2] == tiles[x][1] == tiles[x][0]:
+                tiles[x][3], tiles[x][1] = 0, 0
+                tiles[x][2], tiles[x][0] = tiles[x][2] * 2, tiles[x][0] * 2
+                score += tiles[x][2] + tiles[x][0]
+            for y in range(3):
+                if tiles[x][y] == tiles[x][y+1]:
+                    tiles[x][y] = tiles[x][y] * 2
+                    tiles[x][y+1] = 0
+                    score += tiles[x][y]
 
     elif direction == "UP":
 
-        for i in range(4):
-            if tiles[0][i] == tiles[1][i] == tiles[2][i] == tiles[3][i]:
-                tiles[0][i] = tiles[0][i] * 2
-                tiles[1][i] = 0
-                tiles[2][i] = tiles[2][i] * 2
-                tiles[3][i] = 0
-                score += tiles[0][i] + tiles[2][i]
-
-            if tiles[0][i] == tiles[1][i]:
-                tiles[0][i] = tiles[0][i] * 2
-                tiles[1][i] = 0
-                score += tiles[0][i]
-
-            if tiles[1][i] == tiles[2][i]:
-                tiles[1][i] = tiles[1][i] * 2
-                tiles[2][i] = 0
-                score += tiles[1][i]
-
-            if tiles[2][i] == tiles[3][i]:
-                tiles[2][i] = tiles[2][i] * 2
-                tiles[3][i] = 0
-                score += tiles[2][i]
+        for y in range(4):
+            if tiles[0][y] == tiles[1][y] == tiles[2][y] == tiles[3][y]:
+                tiles[0][y], tiles[2][y] = tiles[0][y] * 2, tiles[2][y] * 2
+                tiles[1][y], tiles[3][y] = 0, 0
+                score += tiles[0][y] + tiles[2][y]
+            for x in range(3):
+                if tiles[x][y] == tiles[x+1][y]:
+                    tiles[x][y] = tiles[x][y] * 2
+                    tiles[x+1][y] = 0
+                    score += tiles[x][y]
 
     elif direction == "DOWN":
 
-        for i in range(4):
-            if tiles[0][i] == tiles[1][i] == tiles[2][i] == tiles[3][i]:
-                tiles[0][i] = 0
-                tiles[1][i] = tiles[1][i] * 2
-                tiles[2][i] = 0
-                tiles[3][i] = tiles[3][i] * 2
-                score += tiles[1][i] + tiles[3][i]
+        for y in range(4):
+            if tiles[0][y] == tiles[1][y] == tiles[2][y] == tiles[3][y]:
+                tiles[0][y], tiles[2][y] = 0, 0
+                tiles[1][y], tiles[3][y] = tiles[1][y] * 2, tiles[3][y] * 2
+                score += tiles[1][y] + tiles[3][y]
 
-            if tiles[3][i] == tiles[2][i]:
-                tiles[3][i] = tiles[3][i] * 2
-                tiles[2][i] = 0
-                score += tiles[3][i]
+            for x in range(3, 0, -1):
+                if tiles[x][y] == tiles[x-1][y]:
+                    tiles[x][y] = tiles[x-1][y] * 2
+                    tiles[2][y] = 0
+                    score += tiles[3][y]
 
-            if tiles[2][i] == tiles[1][i]:
-                tiles[2][i] = tiles[1][i] * 2
-                tiles[1][i] = 0
-                score += tiles[2][i]
-
-            if tiles[1][i] == tiles[0][i]:
-                tiles[1][i] = tiles[0][i] * 2
-                tiles[0][i] = 0
-                score += tiles[1][i]
     slide(direction, tiles)
     return score
 
@@ -284,7 +238,6 @@ def main(stdscr):
     tiles = []
     for tile in range(4):
         tiles.append([0] * 4)
-
 
     # do not wait for input when calling getch
     # stdscr.nodelay(1)
