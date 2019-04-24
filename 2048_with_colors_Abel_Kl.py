@@ -2,12 +2,7 @@ import curses
 from random import randint
 
 
-tiles = []
-for tile in range(4):
-    tiles.append([0] * 4)
-
-
-def can_move():
+def can_move(tiles):
     dir_string = []
     can_move = [False, False, False, False]
 
@@ -34,7 +29,7 @@ def can_move():
                 can_move[3] = True
 
     for i in range(4):
-        if can_move[i] == True:
+        if can_move[i]:
             if i == 0:
                 dir_string.append("UP")
             if i == 1:
@@ -47,9 +42,9 @@ def can_move():
     return dir_string
 
 
-def add(direction):
+def add(direction, tiles):
     score = 0
-    slide(direction)
+    slide(direction, tiles)
 
     if direction == "RIGHT":
         for i in range(4):
@@ -148,32 +143,11 @@ def add(direction):
                 tiles[1][i] = tiles[0][i] * 2
                 tiles[0][i] = 0
                 score += tiles[1][i]
-    slide(direction)
+    slide(direction, tiles)
     return score
 
-    if dir == "UP":
-        for y in range(4):
-            for x in range(3):
-                if step_over == False:
-                    if tiles[x][y] == tiles[x + 1][y]:
-                        tiles[x + 1][y] *= 2
-                        tiles[x][y] = 0
-                        step_over = True
-                else:
-                    step_over = False
-    if dir == "DOWN":
-        for y in range(4):
-            for x in range(3, 1, -1):
-                if step_over == False:
-                    if tiles[x][y] == tiles[x - 1][y]:
-                        tiles[x - 1][y] *= 2
-                        tiles[x][y] = 0
-                        step_over = True
-                else:
-                    step_over = False
 
-
-def draw(stdscr, score):
+def draw(stdscr, score, tiles):
 
     stdscr.clear()
 
@@ -219,12 +193,11 @@ def draw(stdscr, score):
                   "|" + + 5 * "_" + "|" + "\n", curses.color_pair(0))
 
     stdscr.addstr(str(score) + "  ", curses.color_pair(0))
-    stdscr.addstr(",".join(can_move()), curses.color_pair(0))
     stdscr.refresh()
     stdscr.move(0, 0)
 
 
-def spawn():
+def spawn(tiles):
     instance = 0
     while(True):
         instance += 1
@@ -244,17 +217,15 @@ def spawn():
             return False
 
 
-def slide(dir):
+def slide(dir, tiles):
     moved = True
-    moved_return = False
-    while moved == True:
+    while moved:
         moved = False
         if dir == "UP":
             for y in range(4):
                 for x in range(3, 0, -1):
                     if not(tiles[x][y] == 0) and tiles[x - 1][y] == 0:
                         moved = True
-                        moved_return = True
                         tiles[x - 1][y] = tiles[x][y]
                         tiles[x][y] = 0
         if dir == "DOWN":
@@ -262,7 +233,6 @@ def slide(dir):
                 for x in range(3):
                     if not(tiles[x][y] == 0) and tiles[x + 1][y] == 0:
                         moved = True
-                        moved_return = True
                         tiles[x + 1][y] = tiles[x][y]
                         tiles[x][y] = 0
         if dir == "LEFT":
@@ -270,7 +240,6 @@ def slide(dir):
                 for y in range(3, 0, -1):
                     if not(tiles[x][y] == 0) and tiles[x][y - 1] == 0:
                         moved = True
-                        moved_return = True
                         tiles[x][y - 1] = tiles[x][y]
                         tiles[x][y] = 0
         if dir == "RIGHT":
@@ -278,7 +247,6 @@ def slide(dir):
                 for y in range(3):
                     if not(tiles[x][y] == 0) and tiles[x][y + 1] == 0:
                         moved = True
-                        moved_return = True
                         tiles[x][y + 1] = tiles[x][y]
                         tiles[x][y] = 0
 
@@ -313,24 +281,29 @@ def main(stdscr):
     curses.init_pair(6, curses.COLOR_CYAN, curses.COLOR_BLACK)
     curses.init_pair(7, curses.COLOR_WHITE, curses.COLOR_BLACK)
 
+    tiles = []
+    for tile in range(4):
+        tiles.append([0] * 4)
+
+
     # do not wait for input when calling getch
     # stdscr.nodelay(1)
-    spawn()
+    spawn(tiles)
     score = 0
     while True:
-        spawn()
-        can = can_move()
+        spawn(tiles)
+        can = can_move(tiles)
         if len(can) == 0:
             break
-        draw(stdscr, score)
+        draw(stdscr, score, tiles)
         while True:
             key = (keyboard_inputs(stdscr))
             if key in can or key == "QUIT":
                 break
         if key == "QUIT":
             break
-        score += add(key)
-        can = can_move()
+        score += add(key, tiles)
+        can = can_move(tiles)
     while True:
         stdscr.clear()
         stdscr.addstr("Game over")
