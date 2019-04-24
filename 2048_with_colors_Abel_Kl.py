@@ -203,6 +203,16 @@ def init_curses():
     curses.init_pair(7, curses.COLOR_WHITE, curses.COLOR_BLACK)
 
 
+def game_over(stdscr):
+    while True:
+        stdscr.clear()
+        stdscr.addstr("Game over")
+        stdscr.refresh()
+        if stdscr.getch() == ord('q'):
+            break
+
+
+
 def main(stdscr):
     init_curses()
     tiles = []
@@ -221,12 +231,7 @@ def main(stdscr):
         if key == "QUIT":
             break
         score += add(key, tiles)
-    while True:
-        stdscr.clear()
-        stdscr.addstr("Game over")
-        stdscr.refresh()
-        if stdscr.getch() == ord('q'):
-            break
+    game_over(stdscr)
 
 
 # wrap it so it doesn't mess with terminal settings while debugging
