@@ -167,23 +167,30 @@ def slide(dir, tiles):
                     tiles[x][y] = 0
 
 
-def keyboard_inputs(stdscr):
+def keyboard_inputs(stdscr, can):
     while True:
+        while True:
 
-        # get keyboard input, returns -1 if none available
-        c = stdscr.getch()
-
-        if c != -1:
-            if c == ord('q'):
-                return "QUIT"
-            elif c == curses.KEY_DOWN:
-                return "DOWN"
-            elif c == curses.KEY_UP:
-                return "UP"
-            elif c == curses.KEY_LEFT:
-                return "LEFT"
-            elif c == curses.KEY_RIGHT:
-                return "RIGHT"
+            # get keyboard input, returns -1 if none available
+            c = stdscr.getch()
+            key = ""
+            if c != -1:
+                if c == ord('q'):
+                    return "QUIT"
+                elif c == curses.KEY_DOWN:
+                    key = "DOWN"
+                    break
+                elif c == curses.KEY_UP:
+                    key = "UP"
+                    break
+                elif c == curses.KEY_LEFT:
+                    key = "LEFT"
+                    break
+                elif c == curses.KEY_RIGHT:
+                    key = "RIGHT"
+                    break
+        if key in can:
+            return key
 
 
 def init_curses():
@@ -207,21 +214,17 @@ def main(stdscr):
     while True:
         spawn(tiles)
         can = can_move(tiles)
-        if len(can) == 0:
+        if not can:
             break
         draw(stdscr, score, tiles)
-        while True:
-            key = (keyboard_inputs(stdscr))
-            if key in can or key == "QUIT":
-                break
+        key = keyboard_inputs(stdscr, can) 
         if key == "QUIT":
             break
         score += add(key, tiles)
-        can = can_move(tiles)
     while True:
         stdscr.clear()
         stdscr.addstr("Game over")
-        stdscr.refresh
+        stdscr.refresh()
         if stdscr.getch() == ord('q'):
             break
 
