@@ -151,27 +151,6 @@ def add(direction):
     slide(direction)
     return score
 
-    if dir == "UP":
-        for y in range(4):
-            for x in range(3):
-                if step_over == False:
-                    if tiles[x][y] == tiles[x + 1][y]:
-                        tiles[x + 1][y] *= 2
-                        tiles[x][y] = 0
-                        step_over = True
-                else:
-                    step_over = False
-    if dir == "DOWN":
-        for y in range(4):
-            for x in range(3, 1, -1):
-                if step_over == False:
-                    if tiles[x][y] == tiles[x - 1][y]:
-                        tiles[x - 1][y] *= 2
-                        tiles[x][y] = 0
-                        step_over = True
-                else:
-                    step_over = False
-
 
 def draw(stdscr, score):
 
@@ -246,15 +225,13 @@ def spawn():
 
 def slide(dir):
     moved = True
-    moved_return = False
-    while moved == True:
+    while moved:
         moved = False
         if dir == "UP":
             for y in range(4):
                 for x in range(3, 0, -1):
                     if not(tiles[x][y] == 0) and tiles[x - 1][y] == 0:
                         moved = True
-                        moved_return = True
                         tiles[x - 1][y] = tiles[x][y]
                         tiles[x][y] = 0
         if dir == "DOWN":
@@ -262,7 +239,6 @@ def slide(dir):
                 for x in range(3):
                     if not(tiles[x][y] == 0) and tiles[x + 1][y] == 0:
                         moved = True
-                        moved_return = True
                         tiles[x + 1][y] = tiles[x][y]
                         tiles[x][y] = 0
         if dir == "LEFT":
@@ -270,7 +246,6 @@ def slide(dir):
                 for y in range(3, 0, -1):
                     if not(tiles[x][y] == 0) and tiles[x][y - 1] == 0:
                         moved = True
-                        moved_return = True
                         tiles[x][y - 1] = tiles[x][y]
                         tiles[x][y] = 0
         if dir == "RIGHT":
@@ -278,7 +253,6 @@ def slide(dir):
                 for y in range(3):
                     if not(tiles[x][y] == 0) and tiles[x][y + 1] == 0:
                         moved = True
-                        moved_return = True
                         tiles[x][y + 1] = tiles[x][y]
                         tiles[x][y] = 0
 
@@ -305,7 +279,7 @@ def keyboard_inputs(stdscr):
 def main(stdscr):
     # init color-pairs
 
-    curses.init_pair(1, curses.COLOR_ORANGE, curses.COLOR_BLACK)
+    curses.init_pair(1, curses.COLOR_RED, curses.COLOR_BLACK)
     curses.init_pair(2, curses.COLOR_GREEN, curses.COLOR_BLACK)
     curses.init_pair(3, curses.COLOR_YELLOW, curses.COLOR_BLACK)
     curses.init_pair(4, curses.COLOR_BLUE, curses.COLOR_BLACK)
