@@ -221,34 +221,19 @@ def slide(dir, tiles):
     moved = True
     while moved:
         moved = False
-        if dir == "UP":
-            for y in range(4):
-                for x in range(3, 0, -1):
-                    if not(tiles[x][y] == 0) and tiles[x - 1][y] == 0:
-                        moved = True
-                        tiles[x - 1][y] = tiles[x][y]
-                        tiles[x][y] = 0
-        if dir == "DOWN":
-            for y in range(4):
-                for x in range(3):
-                    if not(tiles[x][y] == 0) and tiles[x + 1][y] == 0:
-                        moved = True
-                        tiles[x + 1][y] = tiles[x][y]
-                        tiles[x][y] = 0
-        if dir == "LEFT":
-            for x in range(4):
-                for y in range(3, 0, -1):
-                    if not(tiles[x][y] == 0) and tiles[x][y - 1] == 0:
-                        moved = True
-                        tiles[x][y - 1] = tiles[x][y]
-                        tiles[x][y] = 0
-        if dir == "RIGHT":
-            for x in range(4):
-                for y in range(3):
-                    if not(tiles[x][y] == 0) and tiles[x][y + 1] == 0:
-                        moved = True
-                        tiles[x][y + 1] = tiles[x][y]
-                        tiles[x][y] = 0
+               
+        bottom, top, step = (3, 0, -1) if dir == "UP" or dir == "LEFT" else(0, 3, 1)
+        x_offset = - 1 if dir == "UP" else 1 if dir == "DOWN" else 0
+        y_offset = - 1 if dir == "LEFT" else 1 if dir == "RIGHT" else 0
+
+        for outer_loop in range(4):
+            for inner_loop in range(bottom, top, step):
+                x = outer_loop if dir == "LEFT" or dir == "RIGHT" else inner_loop
+                y = outer_loop if dir == "UP" or dir == "DOWN" else inner_loop
+                if not(tiles[x][y] == 0) and tiles[x+x_offset][y+y_offset] == 0:
+                    moved = True
+                    tiles[x + x_offset][y + y_offset] = tiles[x][y]
+                    tiles[x][y] = 0 
 
 
 def keyboard_inputs(stdscr):
@@ -270,9 +255,7 @@ def keyboard_inputs(stdscr):
                 return "RIGHT"
 
 
-def main(stdscr):
-    # init color-pairs
-
+def init_curses():
     curses.init_pair(1, curses.COLOR_RED, curses.COLOR_BLACK)
     curses.init_pair(2, curses.COLOR_GREEN, curses.COLOR_BLACK)
     curses.init_pair(3, curses.COLOR_YELLOW, curses.COLOR_BLACK)
@@ -281,13 +264,13 @@ def main(stdscr):
     curses.init_pair(6, curses.COLOR_CYAN, curses.COLOR_BLACK)
     curses.init_pair(7, curses.COLOR_WHITE, curses.COLOR_BLACK)
 
+
+def main(stdscr):
+    init_curses()
     tiles = []
     for tile in range(4):
         tiles.append([0] * 4)
 
-
-    # do not wait for input when calling getch
-    # stdscr.nodelay(1)
     spawn(tiles)
     score = 0
     while True:
