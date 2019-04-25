@@ -1,4 +1,5 @@
 import curses
+import string
 from random import randint
 
 
@@ -87,7 +88,7 @@ def add(direction, tiles):
             for x in range(3, 0, -1):
                 if tiles[x][y] == tiles[x-1][y]:
                     tiles[x][y] = tiles[x-1][y] * 2
-                    tiles[2][y] = 0
+                    tiles[x-1][y] = 0
                     score += tiles[3][y]
 
     slide(direction, tiles)
@@ -167,18 +168,58 @@ def slide(dir, tiles):
                     tiles[x][y] = 0
 
 
-def print_high_scores():
-    with open("high_scores","r") as f:
+def print_high_scores(stdscr):
+    
+    with open("high_scores.txt", "r") as f:
+        scores = f.readlines()
+        stdscr.clear()
+        stdscr.addstr("High scores:\n")
+        for line in scores:
+            stdscr.addstr(line.split(":")[0].ljust(10, "_") + line.split(":")[1].rjust(10, "_"))
+        stdscr.refresh()
+
+
+""" 
+def print_highest_score():
+ """
+
+
+def write_highscore(score):
+    try:
+        with open("high_scores.txt", "r") as f:
+            high_scores = f.readlines()
+    except FileNotFoundError:
+        with open("high_scores.txt", "w") as f:
+            f.write(score[0] + ":" + str(score[1]))
+        return
+    numbers = [[s.split(":")[0], (int(s.split(":")[1]))] for s in high_scores]
+    print(numbers)
+
+    if len(high_scores) >= 10:
+        for i in range(10):
+            if score[1] > numbers[i][1]:
+                del numbers[i]
+                numbers.insert(i, score)
+                break
+    elif high_scores == []:
+        numbers.append(score)
+    else:
+        for i in range(len(numbers)):
+            if score[1] > numbers[i][1]:
+                numbers.insert(i, score)
+                break
+            numbers.append(score)
+
+    with open("high_scores.txt", "w") as f:
+        to_write = ""
+        for line in numbers:
+            to_write += line[0] + ":" + str(line[1]) + "\n"
+        f.write(to_write)
         
 
-
-
-def print_highest_score():
-
-def write_highscore():
-
+""" 
 def write_highest_score():
-
+ """
 
 
 def keyboard_inputs(stdscr, can):
@@ -217,14 +258,40 @@ def init_curses():
     curses.init_pair(7, curses.COLOR_WHITE, curses.COLOR_BLACK)
 
 
-def game_over(stdscr):
+def get_name(stdscr):
+    stdscr.clear()
+    stdscr.addstr("What's your name?\n")
+    stdscr.refresh()
+    curses.echo()
+    name = ""
+    """ 
     while True:
-        stdscr.clear()
-        stdscr.addstr("Game over")
-        stdscr.refresh()
+        c = stdscr.getch()
+        for alpha in string.ascii_letters:
+            if c == ord(alpha):
+                name += chr(c)
+        if c == curses.KEY_ENTER:   
+            break
+    """
+    while True:
+        name = stdscr.getstr()
+        if name != b"":
+            break
+    curses.noecho()
+    return name
+
+        
+def game_over(stdscr, score):
+
+    name = get_name(stdscr)
+    write_highscore([name.decode('UTF-8'), score])
+    print_high_scores(stdscr)
+    stdscr.addstr("Press q to quit!")
+    stdscr.refresh()
+    while True:
         if stdscr.getch() == ord('q'):
             break
-
+        
 
 def main(stdscr):
     init_curses()
@@ -253,7 +320,7 @@ def main(stdscr):
         if key == "QUIT":
             break
         score += add(key, tiles)
-    game_over(stdscr)
+    game_over(stdscr, score)
 
 
 # wrap it so it doesn't mess with terminal settings while debugging
