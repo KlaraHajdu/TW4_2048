@@ -227,21 +227,18 @@ def write_highscore(score):
         return
     numbers = [[s.split(":")[0], (int(s.split(":")[1]))] for s in high_scores]
 
-    if len(high_scores) >= 10:
+    if high_scores == []:
+        numbers.append(score)
+    elif len(high_scores) >= 10:
         for i in range(10):
             if score[1] > numbers[i][1]:
                 del numbers[i]
-                numbers.insert(i, score)
+                numbers.insert(i+1, score)
                 break
-    elif high_scores == []:
-        numbers.append(score)
     else:
-        for i in range(len(numbers)):
-            if score[1] > numbers[i][1]:
-                numbers.insert(i, score)
-                break
-            numbers.append(score)
-
+        numbers.append(score)
+    numbers.sort(key=lambda x: x[1], reverse=True)
+    
     with open("high_scores.txt", "w") as f:
         to_write = ""
         for line in numbers:
@@ -291,15 +288,6 @@ def get_name(stdscr):
     stdscr.refresh()
     curses.echo()
     name = ""
-    """
-    while True:
-        c = stdscr.getch()
-        for alpha in string.ascii_letters:
-            if c == ord(alpha):
-                name += chr(c)
-        if c == curses.KEY_ENTER:
-            break
-    """
     while True:
         name = stdscr.getstr()
         if name != b"":
