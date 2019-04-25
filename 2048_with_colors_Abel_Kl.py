@@ -212,13 +212,12 @@ def game_over(stdscr):
             break
 
 
-
 def main(stdscr):
     init_curses()
     tiles = []
     for tile in range(4):
         tiles.append([0] * 4)
-
+    printed = False
     spawn(tiles)
     score = 0
     while True:
@@ -226,8 +225,17 @@ def main(stdscr):
         can = can_move(tiles)
         if not can:
             break
-        draw(stdscr, score, tiles)
-        key = keyboard_inputs(stdscr, can) 
+        while True:
+            try:
+                draw(stdscr, score, tiles)
+                break
+            except curses.error:
+                if not printed:
+                    stdscr.clear()
+                    stdscr.addstr("Screen too small, please restart the program!")
+                    stdscr.refresh()
+                    printed = True
+        key = keyboard_inputs(stdscr, can)
         if key == "QUIT":
             break
         score += add(key, tiles)
