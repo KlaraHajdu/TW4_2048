@@ -180,35 +180,41 @@ def print_high_scores(stdscr):
 
 
 def write_highest_score(stdscr, score, name):
+    try:
+        with open("highest_scores.txt", "r") as f:
+            content = f.readlines()
+
+    except FileNotFoundError:
+        with open("highest_scores.txt", "w") as f:
+            pass
+        return
 
     stdscr.addstr("Would you like to store your score? y/n")
     stdscr.refresh()
     intention = stdscr.getch()
     if intention == ord('y'):
         gamers = {}
-        with open("highest_scores.txt", "r") as f:
-            content = f.readlines()
-            for player in content:
-                player.split(",")
-            for player in content:
-                gamers[player[0]] = player[1]
-            if name in gamers.keys():
-                if score > gamers[name]:
-                    gamers[name] = score
-                    your_highest_score = score
-            else:
+        for player in content:
+            player.split(",")
+        for player in content:
+            gamers[player[0]] = player[1]
+        if name in gamers.keys():
+            if score > gamers[name]:
                 gamers[name] = score
-                your_highest_score = gamers[name]
-        with open("highest_scores.txt", "w") as f:
-            for gamer, score in gamers.items():
-                f.write(f"{gamer},{score}")
+                your_highest_score = score
+        else:
+            gamers[name] = score
+            your_highest_score = gamers[name]
+    with open("highest_scores.txt", "w") as f:
+        for gamer, score in gamers.items():
+            f.write(f"{gamer},{score}")
 
-        return your_highest_score
+    return your_highest_score
 
 
 def print_highest_score(stdscr, score):
 
-    stdscr.addstr(f"Your highest score is now:{score}")
+    stdscr.addstr(f"\nYour highest score is now:{score}")
 
 
 def write_highscore(score):
@@ -220,7 +226,6 @@ def write_highscore(score):
             f.write(score[0] + ":" + str(score[1]))
         return
     numbers = [[s.split(":")[0], (int(s.split(":")[1]))] for s in high_scores]
-    print(numbers)
 
     if len(high_scores) >= 10:
         for i in range(10):
