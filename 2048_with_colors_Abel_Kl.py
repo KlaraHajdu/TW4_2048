@@ -167,6 +167,20 @@ def slide(dir, tiles):
                     tiles[x][y] = 0
 
 
+def print_high_scores():
+    with open("high_scores","r") as f:
+        
+
+
+
+def print_highest_score():
+
+def write_highscore():
+
+def write_highest_score():
+
+
+
 def keyboard_inputs(stdscr, can):
     while True:
         while True:
