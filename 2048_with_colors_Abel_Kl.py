@@ -87,7 +87,7 @@ def add(direction, tiles):
             for x in range(3, 0, -1):
                 if tiles[x][y] == tiles[x-1][y]:
                     tiles[x][y] = tiles[x-1][y] * 2
-                    tiles[2][y] = 0
+                    tiles[x-1][y] = 0
                     score += tiles[3][y]
 
     slide(direction, tiles)
@@ -167,18 +167,53 @@ def slide(dir, tiles):
                     tiles[x][y] = 0
 
 
-def print_high_scores():
+""" def print_high_scores():
     with open("high_scores","r") as f:
-        
+       """
+""" def write_highscore():
+ """
 
 
+def write_highest_score(stdscr, score):
+    stdscr.clear()
+    stdscr.addstr("Would you like to store your score? y/n")
+    stdscr.refresh()
+    intention = stdscr.getch()
+    if intention == ord('y'):
+        gamers = {}
+        with open("highest_scores.txt", "r") as f:
+            content = f.readlines()
+            for player in content:
+                player.split(",")
+            for player in content:
+                gamers[player[0]] = player[1]
+            stdscr.clear()
+            curses.echo()
+            stdscr.addstr("Please give me your name:")
+            name = stdscr.getstr(1, 0)
+            if name in gamers.keys():
+                if score > gamers[name]:
+                    gamers[name] = score
+            else:
+                gamers[name] = score
+        with open("highest_scores.txt", "w") as f:
+            for gamer, score in gamers.items():
+                f.write(f"{gamer},{score}")
+        your_highest_score = (name, score)
+        return your_highest_score
 
-def print_highest_score():
 
-def write_highscore():
-
-def write_highest_score():
-
+def print_highest_score(stdscr, name, your_highest_score):
+    stdscr.clear()
+    with open("highest_scores.txt", "r") as f:
+        gamers = {}
+        content = f.readlines()
+        for player in content:
+            player.split(",")
+        for player in content:
+            gamers[player[0]] = player[1]
+    stdscr.addstr(f"Your highest score is now:{your_highest_score}")
+    stdscr.refresh()
 
 
 def keyboard_inputs(stdscr, can):
@@ -246,7 +281,8 @@ def main(stdscr):
             except curses.error:
                 if not printed:
                     stdscr.clear()
-                    stdscr.addstr("Screen too small, please restart the program!")
+                    stdscr.addstr(
+                        "Screen too small, please restart the program!")
                     stdscr.refresh()
                     printed = True
         key = keyboard_inputs(stdscr, can)
@@ -254,6 +290,10 @@ def main(stdscr):
             break
         score += add(key, tiles)
     game_over(stdscr)
+    write_highest_score(stdscr, score)
+    print_highest_score(stdscr, write_highest_score, score)
+    while key != "QUIT":
+        continue
 
 
 # wrap it so it doesn't mess with terminal settings while debugging
