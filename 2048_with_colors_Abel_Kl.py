@@ -220,7 +220,6 @@ def write_highscore(score):
             f.write(score[0] + ":" + str(score[1]))
         return
     numbers = [[s.split(":")[0], (int(s.split(":")[1]))] for s in high_scores]
-    print(numbers)
 
     if len(high_scores) >= 10:
         for i in range(10):
