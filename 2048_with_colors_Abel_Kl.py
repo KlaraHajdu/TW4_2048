@@ -176,7 +176,7 @@ def print_high_scores(stdscr):
         stdscr.addstr("High scores:\n")
         for line in scores:
             stdscr.addstr(line.split(":")[0].ljust(
-                10, "_") + line.split(":")[1].rjust(10, "_"))
+                20, "_") + line.split(":")[1].rjust(20, "_"))
 
 
 def write_highest_score(stdscr, score, name):
