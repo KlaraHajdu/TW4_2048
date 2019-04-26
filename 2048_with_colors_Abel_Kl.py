@@ -208,15 +208,16 @@ def write_highest_score(stdscr, score, name):
     if intention == ord('n'):
         return score
     with open("highest_scores.txt", "w") as f:
+        s = ""
         for gamer, score in gamers.items():
-            f.write(f"{gamer},{score}")
+            s += str(gamer) + str(score)
+        f.write(s)
 
     return your_highest_score
 
 
 def print_highest_score(stdscr, score):
-
-    stdscr.addstr(f"\nYour score is now:{score}")
+    stdscr.addstr("Your highest score is now: " + str(score))
 
 
 def write_highscore(score):
