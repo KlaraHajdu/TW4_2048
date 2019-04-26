@@ -210,7 +210,7 @@ def write_highest_score(stdscr, score, name):
     with open("highest_scores.txt", "w") as f:
         s = ""
         for gamer, score in gamers.items():
-            s += str(gamer) + str(score)
+            s += str(gamer) + "," + str(score)
         f.write(s)
 
     return your_highest_score
